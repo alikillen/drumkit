@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drumkit</title>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class = "keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class = "sound">clap</span>
+    </div>
+    <div data-key = "83" class="key">
+      <kbd>S</kbd>
+      <span class = "sound">hihat</span>
+    </div>
+    <div data-key = "68" class="key">
+      <kbd>D</kbd>
+      <span class = "sound">kick</span>
+    </div>
+    <div data-key = "70" class="key">
+      <kbd>F</kbd>
+      <span class = "sound">openhat</span>
+    </div>
+    <div data-key = "71" class="key">
+      <kbd>G</kbd>
+      <span class = "sound">boom</span>
+    </div>
+    <div data-key = "72" class="key">
+      <kbd>D</kbd>
+      <span class = "sound">ride</span>
+    </div>
+    <div data-key = "74" class="key">
+      <kbd>J</kbd>
+      <span class = "sound">snare</span>
+    </div>
+    <div data-key = "75" class="key">
+      <kbd>K</kbd>
+      <span class = "sound">tom</span>
+    </div>
+    <div data-key = "76" class="key">
+      <kbd>L</kbd>
+      <span class = "sound">tink</span>
+    </div>
+  </div>
+
+  <!-- sourcing the files -->
+  <audio data-key="65" src="./sounds/clap-808.wav"></audio>
+  <audio data-key="83" src="./sounds/hihat-digital.wav"></audio>
+  <audio data-key="68" src="./sounds/kick-electro01.wav"></audio>
+  <audio data-key="70" src="./sounds/openhat-808.wav"></audio>
+  <audio data-key="71" src="./sounds/tom-chiptune.wav"></audio>
+  <audio data-key="72" src="./sounds/ride-acoustic02.wav"></audio>
+  <audio data-key="74" src="./sounds/snare-808.wav"></audio>
+  <audio data-key="75" src="./sounds/tom-analog.wav"></audio>
+  <audio data-key="76" src="./sounds/crash-noise.wav"></audio>
+
+  <!-- getting the keystrokes -->
+  <script>   
+      
+    function playSound (e){
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+      // console.log(audio);
+      // console.log(key);
+      if(!audio) return;
+      // will stop the func from running altogether if no audio
+      audio.currentTime = 0;
+      // makes sure audio will rewind to start when pressed quickly
+      audio.play();
+      
+      key.classList.add('playing');
+      // adding class playing on keystroke so that button becomes highlighted -css applied
+    };
+    
+    function removeTransition(e) {
+      if(e.propertyName !== 'transform') return;
+      console.log(e.propertyName);
+      this.classList.remove('playing');
+    }
+    // function that removes playing class from elements after theyre finished transforming
+
+    const keys = document.querySelectorAll(".key");
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    // using a transition end event to identify when to stop the animation/remove the playing class
+    // need to loop over all of them to listen for each transition end event
+
+    window.addEventListener("keydown", playSound);
+    // executes plauSound function on keydown
+
+ </script>
+
+</body>
+</html>
